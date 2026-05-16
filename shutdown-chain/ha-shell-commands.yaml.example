@@ -1,0 +1,25 @@
+# Add this to your Home Assistant configuration.yaml under shell_command:
+#
+# Replace {PC_HOST_OR_IP} with your PC's static-DHCP-reserved IP, and {ADMIN_USER}
+# with the Windows admin username that has the SSH key installed.
+
+shell_command:
+  pc_shutdown_force: >
+    ssh -i /config/.ssh/id_ed25519
+        -o StrictHostKeyChecking=no
+        -o UserKnownHostsFile=/dev/null
+        -o ConnectTimeout=5
+        {ADMIN_USER}@{PC_HOST_OR_IP}
+        "shutdown /s /t 0"
+
+  pc_reboot_force: >
+    ssh -i /config/.ssh/id_ed25519
+        -o StrictHostKeyChecking=no
+        -o UserKnownHostsFile=/dev/null
+        -o ConnectTimeout=5
+        {ADMIN_USER}@{PC_HOST_OR_IP}
+        "shutdown /r /t 0"
+
+# WOL is its own thing — typically use a wake_on_lan integration or a shell_command
+# that calls etherwake/wakeonlan. Example:
+#   pc_boot: "wakeonlan {PC_MAC_ADDRESS}"

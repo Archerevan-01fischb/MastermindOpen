@@ -1,0 +1,85 @@
+# weekly_system_health.ps1.template
+# =================================
+# Weekly Monday-7am Scheduled Task — checks one external system, queues
+# findings to a domain-specific pending_*.md.
+#
+# Adapt this skeleton for each system you want to watch. Common candidates:
+#   - NAS health (disk smart, RAID status, snapshot count, container uptimes)
+#   - VPS health (uptime, disk %, memory, recent errors in journalctl)
+#   - Router (uptime, dropped connections, firmware notice)
+#   - TLS cert expiry (any cert within 30 days of expiry)
+#   - Backup status (last successful backup timestamp)
+#
+# One PS1 per system, one Scheduled Task per PS1. Each writes alerts to its
+# own pending_{system}.md. Mastermind surfaces non-empty content at session start.
+#
+# Replace placeholders:
+#   {MEMORY_DIR}              — your mastermind memory dir
+#   {SYSTEM_NAME}             — short system label (e.g. "qnap", "vps", "router")
+#   {SYSTEM_HOST}             — host/IP to check
+#   {SYSTEM_CHECK_FUNCTION}   — the actual check logic for your system
+
+$ErrorActionPreference = 'Stop'
+
+$SystemName  = "{SYSTEM_NAME}"
+$PendingFile = Join-Path "{MEMORY_DIR}" "pending_$SystemName`_alerts.md"
+
+function Log($msg) {
+    Write-Host "[$([DateTime]::Now.ToString('yyyy-MM-dd HH:mm:ss'))] $msg"
+}
+
+function Check-System {
+    # REPLACE THIS — your system-specific health check logic.
+    # Return an array of alert strings. Empty array = all healthy.
+    #
+    # Example for NAS via SSH:
+    #   ssh root@{SYSTEM_HOST} "df -h /" | ... parse ... | return if >85%
+    #
+    # Example for VPS via curl:
+    #   $resp = Invoke-WebRequest "https://{SYSTEM_HOST}/health" -TimeoutSec 10
+    #   if ($resp.StatusCode -ne 200) { return @("VPS health endpoint returned $($resp.StatusCode)") }
+    #
+    # Example for TLS expiry:
+    #   $cert = Get-RemoteCertExpiry "{SYSTEM_HOST}" 443
+    #   $daysLeft = ($cert.NotAfter - (Get-Date)).Days
+    #   if ($daysLeft -lt 30) { return @("Cert for {SYSTEM_HOST} expires in $daysLeft days") }
+    return @()
+}
+
+$alerts = Check-System
+
+if ($alerts.Count -eq 0) {
+    Log "$SystemName healthy. No alerts."
+    exit 0
+}
+
+$today = [DateTime]::Now.ToString('yyyy-MM-dd')
+$entry = @"
+
+## $today — $SystemName alerts
+
+"@
+foreach ($a in $alerts) {
+    $entry += "- $a`n"
+}
+
+# Ensure pending file has frontmatter.
+if (-not (Test-Path $PendingFile)) {
+    @"
+---
+name: Pending $SystemName Alerts
+description: Auto-populated weekly health check for $SystemName.
+type: project
+---
+# Pending $SystemName Alerts
+
+Surface entries at session start. Clear after action.
+"@ | Set-Content -Path $PendingFile -Encoding UTF8
+}
+
+Add-Content -Path $PendingFile -Value $entry -Encoding UTF8
+
+Log "Queued $($alerts.Count) alert(s) to $PendingFile."
+
+# Optionally: push to Telegram if any alert is "severe."
+# Pattern up to you. Common: if any alert matches /CRITICAL|FAIL|EXPIRED/, curl Telegram.

@@ -1,0 +1,57 @@
+{
+  "_comment_": "HA Lovelace dashboard config for the PC Power view. Paste into the dashboard's Raw config editor (three-dot menu → Edit dashboard → ... → Raw configuration editor).",
+
+  "title": "PC Power",
+  "path": "pc-power",
+  "icon": "mdi:desktop-classic",
+  "cards": [
+    {
+      "type": "vertical-stack",
+      "cards": [
+        {
+          "type": "markdown",
+          "content": "## PC Power Controls\n\nUse **Boot** for normal power-on. Use **Force Shutdown** or **Force Reboot** only when Claude is dead — these bypass the hygiene sweep."
+        },
+        {
+          "type": "tile",
+          "entity": "script.pc_boot",
+          "name": "PC Boot",
+          "icon": "mdi:power",
+          "color": "green",
+          "tap_action": {
+            "action": "call-service",
+            "service": "script.pc_boot"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "script.pc_reboot_force",
+          "name": "PC Reboot FORCE",
+          "icon": "mdi:restart",
+          "color": "amber",
+          "tap_action": {
+            "action": "call-service",
+            "service": "script.pc_reboot_force",
+            "confirmation": {
+              "text": "Force-reboot the PC? This bypasses Claude's hygiene sweep."
+            }
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "script.pc_shutdown_force",
+          "name": "PC Shutdown FORCE",
+          "icon": "mdi:power-off",
+          "color": "red",
+          "tap_action": {
+            "action": "call-service",
+            "service": "script.pc_shutdown_force",
+            "confirmation": {
+              "text": "Force-shutdown the PC? This bypasses Claude's hygiene sweep — use only when Claude is unresponsive."
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

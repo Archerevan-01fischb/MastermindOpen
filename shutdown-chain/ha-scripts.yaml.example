@@ -1,0 +1,36 @@
+# Add these to your Home Assistant scripts.yaml.
+#
+# After adding, restart HA. The three scripts will appear in the Developer Tools
+# → Services registry as script.pc_boot, script.pc_shutdown_force, script.pc_reboot_force.
+#
+# Replace {PC_MAC_ADDRESS} with your PC's MAC address (lowercase, colon-separated).
+
+pc_boot:
+  alias: "PC Boot (WOL)"
+  description: "Send Wake-on-LAN magic packet to power on the PC."
+  sequence:
+    - service: wake_on_lan.send_magic_packet
+      data:
+        mac: "{PC_MAC_ADDRESS}"
+  mode: single
+  icon: mdi:power
+
+pc_shutdown_force:
+  alias: "PC Shutdown FORCE"
+  description: >
+    Force-shutdown the PC via SSH. Use only when Claude is dead and the
+    normal DM-shutdown path is unavailable. No hygiene, no save, no snapshot.
+  sequence:
+    - service: shell_command.pc_shutdown_force
+  mode: single
+  icon: mdi:power-off
+
+pc_reboot_force:
+  alias: "PC Reboot FORCE"
+  description: >
+    Force-reboot the PC via SSH. Use only when Claude is dead. No hygiene
+    runs before the reboot.
+  sequence:
+    - service: shell_command.pc_reboot_force
+  mode: single
+  icon: mdi:restart

@@ -1,0 +1,41 @@
+@echo off
+
+:: Mastermind boot chain — Windows entry point
+:: Lives at: %APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\StartMastermind.bat
+::
+:: REPLACE the placeholders below before installing:
+::   {PROJECT_ROOT}    — your mastermind project parent dir
+::   {IDE_EXE}         — absolute path to your IDE executable
+::   {BOT_TOKEN}       — Telegram bot token (123456:AAxxx... from BotFather)
+::   {CHAT_ID}         — your Telegram chat_id (number)
+
+set LOGFILE={PROJECT_ROOT}\claude_startup.log
+echo [%date% %time%] === STARTUP CHAIN BEGIN === >> "%LOGFILE%"
+echo [%date% %time%] Step 1: Bat file executed >> "%LOGFILE%"
+
+:: Wait for Windows to fully settle after cold boot (login, services, network).
+:: 30s is empirical: short enough to feel snappy, long enough that schtasks
+:: doesn't fail with "the service is not available."
+echo [%date% %time%] Step 2: Waiting 30 seconds for system to settle... >> "%LOGFILE%"
+timeout /t 30 /nobreak > nul
+
+:: Boot ping #1 (PC up). Token hardcoded for boot-time simplicity — no env vars
+:: yet at this point in the boot chain.
+::   --ssl-no-revoke: Windows schannel can't reach CRL server during cold boot.
+::   -m 5: cap each call so a network hiccup can't stall the boot chain.
+echo [%date% %time%] Step 2.5: Sending Telegram boot ping... >> "%LOGFILE%"
+curl.exe -s -m 5 --ssl-no-revoke -X POST "https://api.telegram.org/bot{BOT_TOKEN}/sendMessage" --data-urlencode "chat_id={CHAT_ID}" --data-urlencode "text=[boot] PC powered on at %date% %time% - Claude launching..." >> "%LOGFILE%" 2>&1
+
+:: Launch the IDE with the project root.
+echo [%date% %time%] Step 3: Launching IDE... >> "%LOGFILE%"
+start "" "{IDE_EXE}" "{PROJECT_ROOT}"
+
+:: Trigger the pre-registered Scheduled Task that launches the AHK script.
+:: Why a Scheduled Task instead of "start /min powershell -File foo.ps1"?
+:: PC Matic Super Shield AMSI-kills the latter (matches keylogger/RAT signatures).
+:: Task Scheduler is a trusted parent that PC Matic doesn't block.
+:: The task is registered by register_mastermind_task.ps1.
+echo [%date% %time%] Step 4: Triggering ClaudeCodeLauncher scheduled task... >> "%LOGFILE%"
+schtasks /run /tn "ClaudeCodeLauncher" >> "%LOGFILE%" 2>&1
+
+echo [%date% %time%] Step 5: Startup bat complete, exiting >> "%LOGFILE%"

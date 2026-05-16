@@ -1,0 +1,122 @@
+#Requires AutoHotkey v2.0
+; Mastermind IDE launcher — fired by ClaudeCodeLauncher Scheduled Task.
+;
+; What it does:
+;   1. Waits up to 300s for the IDE window to appear.
+;   2. Waits another 30s for IDE plugins/indexing to settle.
+;   3. Activates the IDE, opens its terminal panel, types the Claude launch command.
+;   4. Verifies claude.exe is running. Sends Telegram boot ping #2 (success or warning).
+;
+; REPLACE the placeholders below:
+;   {PROJECT_ROOT}        — your mastermind project parent dir
+;   {IDE_WINDOW_REGEX}    — AHK regex matching your IDE's title.
+;                           Examples:
+;                             RustRover at <ProjectName>:  "^<ProjectName>(\s|$|[\x{2013}\-\[])"
+;                             VS Code:                     "Visual Studio Code$"
+;                             Windows Terminal:            "Windows Terminal"
+;   {IDE_TERMINAL_HOTKEY} — AHK keystroke to open the IDE terminal.
+;                           Examples:
+;                             RustRover/IntelliJ: "!{F12}"   (Alt+F12)
+;                             VS Code:            "^``"      (Ctrl+`)
+;                             PyCharm:            "!{F12}"
+;   {CLAUDE_LAUNCH_CMD}   — exact text to type in the terminal. Common:
+;                             "claude --channels plugin:telegram@claude-plugins-official"
+;                             "claude" (if you don't use channel plugins)
+;   {BOT_TOKEN}, {CHAT_ID} — same Telegram credentials as the bat file.
+
+LogFile := "{PROJECT_ROOT}\claude_startup.log"
+
+Log(msg) {
+    global LogFile
+    ts := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+    try {
+        FileAppend("[" ts "] " msg "`n", LogFile)
+    } catch {
+        FileAppend("[" ts "] (fallback) " msg "`n", "{PROJECT_ROOT}\claude_startup_fallback.log")
+    }
+}
+
+Log("AHK launcher: alive at script entry (PID " ProcessExist() ", AHK " A_AhkVersion ")")
+
+TelegramPing(text) {
+    token := "{BOT_TOKEN}"
+    chatId := "{CHAT_ID}"
+    url := "https://api.telegram.org/bot" token "/sendMessage"
+    text := StrReplace(text, '"', '""')
+    cmd := A_ComSpec ' /c curl.exe -s -m 5 --ssl-no-revoke -X POST "' url '" --data-urlencode "chat_id=' chatId '" --data-urlencode "text=' text '"'
+    try {
+        RunWait(cmd, , "Hide")
+    } catch as e {
+        Log("AHK launcher: TelegramPing failed: " e.Message)
+    }
+}
+
+SetTitleMatchMode("RegEx")
+
+; Wait up to 300 seconds for the IDE window.
+timeout := 300
+elapsed := 0
+hwnd := 0
+Log("AHK launcher: Waiting for IDE window...")
+while (elapsed < timeout) {
+    hwnd := WinExist("{IDE_WINDOW_REGEX}")
+    if (hwnd)
+        break
+    Sleep(3000)
+    elapsed += 3
+}
+
+if (!hwnd) {
+    Log("AHK launcher: FAILED - IDE window not found after " timeout "s")
+    ExitApp(1)
+}
+
+title := WinGetTitle("ahk_id " hwnd)
+Log("AHK launcher: Window found after " elapsed "s: '" title "' (hwnd " hwnd ")")
+
+; Wait for IDE plugin/index load.
+Log("AHK launcher: Waiting 30s for IDE to load...")
+Sleep(30000)
+
+hwnd := WinExist("{IDE_WINDOW_REGEX}")
+if (!hwnd) {
+    Log("AHK launcher: FAILED - Window vanished during load wait")
+    ExitApp(1)
+}
+
+Log("AHK launcher: Activating IDE...")
+WinActivate("ahk_id " hwnd)
+if (!WinWaitActive("ahk_id " hwnd, , 5)) {
+    Log("AHK launcher: WARNING - WinWaitActive timed out; sending keys anyway")
+} else {
+    Log("AHK launcher: IDE active")
+}
+Sleep(500)
+
+; Open IDE terminal panel.
+Log("AHK launcher: Opening IDE terminal ({IDE_TERMINAL_HOTKEY})...")
+Send("{IDE_TERMINAL_HOTKEY}")
+Sleep(3000)
+
+WinActivate("ahk_id " hwnd)
+Sleep(300)
+
+; SendText is literal (no key-name parsing). Required for commands containing
+; colon/at-sign like "--channels plugin:telegram@claude-plugins-official".
+Log("AHK launcher: Launching Claude Code...")
+SendText("{CLAUDE_LAUNCH_CMD}")
+Sleep(200)
+Send("{Enter}")
+
+; Verify claude.exe is actually running. Without this verify-step, the bat
+; logged "Done" even when keystrokes silently landed in the wrong window.
+Sleep(15000)
+claudePid := ProcessExist("claude.exe")
+ts := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+if (claudePid) {
+    Log("AHK launcher: Done - claude.exe running (PID " claudePid ")")
+    TelegramPing("[boot] " ts " - Claude up and listening (PID " claudePid "). Mastermind ready.")
+} else {
+    Log("AHK launcher: WARNING - claude.exe not detected 15s after launch. Keystrokes may have landed in the wrong window.")
+    TelegramPing("[boot] " ts " - WARNING: claude.exe NOT detected after launch. Mastermind may be down. Use HA SSH shutdown if you need to power off.")
+}
