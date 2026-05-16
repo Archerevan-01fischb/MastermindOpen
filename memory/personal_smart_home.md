@@ -25,7 +25,7 @@ metadata:
 
 ## Integrations pending / blocked
 
-- {PENDING_1} (e.g. "Orbit B-hyve via HACS — Bruce credentials in 1Password")
+- {PENDING_1} (e.g. "Orbit B-hyve via HACS — credentials stored in your password manager")
 - {PENDING_2}
 
 ## Hardware blockers

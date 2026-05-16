@@ -24,7 +24,7 @@ metadata:
 
 - **Dentist:** {DENTIST_NAME}, {DENTIST_PRACTICE_NAME}
 - **Hygiene visits:** {HYGIENE_CADENCE} (e.g. "every 4 months")
-- **Source/protocol followed:** {PROTOCOL_SOURCE} (e.g. "Dr. Ellie Phillips' Mouth Care Routine — 3-rinse, xylitol-heavy")
+- **Source/protocol followed:** {PROTOCOL_SOURCE} (e.g. "the multi-rinse xylitol-heavy protocol from {DENTIST_AUTHOR}'s book")
 
 ## Conditions to track
 
