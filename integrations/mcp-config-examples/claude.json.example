@@ -1,0 +1,34 @@
+{
+  "_comment_": "User-scoped Claude Code config — lives at ~/.claude.json (NOT ~/.claude/mcp.json — that's the wrong file, see feedback_mcp_config_location.md). Servers here are available in EVERY Claude Code session.",
+
+  "mcpServers": {
+
+    "gmail-multi": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["{PATH_TO_GMAIL_MULTI_REPO}/server.js"]
+    },
+
+    "homeassistant": {
+      "type": "http",
+      "url": "http://{HA_HOST}:8123/api/mcp",
+      "headers": {
+        "Authorization": "Bearer {HA_LONG_LIVED_TOKEN}"
+      }
+    },
+
+    "quickbooks": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["{PATH_TO_QB_MCP}/server.py"],
+      "env": {
+        "QBO_CLIENT_ID": "{QBO_CLIENT_ID}",
+        "QBO_CLIENT_SECRET": "{QBO_CLIENT_SECRET}",
+        "QBO_REDIRECT_URI": "http://localhost:8000/callback"
+      }
+    }
+
+  },
+
+  "_note_": "Anthropic-managed connectors (Google Calendar, Google Drive, DocuSign, Telegram channel) are configured via the Claude Code Settings UI, not here. Only third-party / community MCP servers go in this file."
+}

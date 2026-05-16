@@ -1,0 +1,22 @@
+{
+  "_comment_": "Project-scoped MCP config. Goes at the project root as .mcp.json. Servers defined here are only available when Claude Code is run from this project dir.",
+
+  "mcpServers": {
+    "example-stdio-server": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["{PATH_TO_SERVER}/index.js"],
+      "env": {
+        "API_TOKEN": "{REPLACE_OR_USE_ENV_VAR}"
+      }
+    },
+
+    "example-http-server": {
+      "type": "http",
+      "url": "http://localhost:8765/mcp",
+      "headers": {
+        "Authorization": "Bearer {TOKEN}"
+      }
+    }
+  }
+}
