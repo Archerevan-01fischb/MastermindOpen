@@ -1,0 +1,100 @@
+"""
+render_dashboard.py.template
+============================
+Generic skeleton: fetch data → render HTML → open in browser.
+
+Mastermind uses this pattern (per [[feedback_dashboard_html]]) to present
+project dashboards instead of dumping markdown tables in the terminal.
+
+To use:
+1. Copy this file to your project as `scripts/render_dashboard.py`.
+2. Fill in fetch_data() with your project's data-gathering calls (curl, ssh,
+   API hits, SQLite queries — whatever).
+3. Fill in render_html() with your dashboard layout. The dict returned by
+   fetch_data() gets interpolated into the template.
+4. Run: `python scripts/render_dashboard.py` — it writes dashboard.html and
+   opens it in the default browser.
+
+Background-agent caveat: when this script runs in a background agent, the
+browser-open step won't work (agents have no display). Move the open() call
+to the main session, or run with `--no-open` and have the main session open
+the file itself.
+"""
+
+import json
+import sys
+import webbrowser
+from datetime import datetime
+from pathlib import Path
+
+# ---------------------------------------------------------------------------
+# CONFIGURE
+# ---------------------------------------------------------------------------
+
+OUTPUT_PATH = Path("dashboard.html")
+TITLE = "{PROJECT_NAME} Dashboard"
+
+
+def fetch_data() -> dict:
+    """Fetch all dashboard data. Replace this with your project's data calls."""
+    return {
+        "timestamp": datetime.now().isoformat(timespec="seconds"),
+        "examples": [
+            {"name": "Example metric", "value": "42", "status": "ok"},
+            {"name": "Another check", "value": "stale", "status": "warn"},
+        ],
+        # Add your fetched data here.
+    }
+
+
+def status_badge(status: str) -> str:
+    color = {"ok": "#22c55e", "warn": "#f59e0b", "error": "#ef4444"}.get(status, "#94a3b8")
+    return f'<span style="background:{color};color:white;padding:2px 8px;border-radius:8px;font-size:12px">{status}</span>'
+
+
+def render_html(data: dict) -> str:
+    rows = "\n".join(
+        f"<tr><td>{e['name']}</td><td>{e['value']}</td><td>{status_badge(e['status'])}</td></tr>"
+        for e in data["examples"]
+    )
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{TITLE}</title>
+<style>
+  body {{ font-family: -apple-system, system-ui, sans-serif; margin: 2rem; background: #0f172a; color: #e2e8f0; }}
+  h1 {{ margin-top: 0; }}
+  table {{ border-collapse: collapse; width: 100%; }}
+  th, td {{ padding: 8px 12px; border-bottom: 1px solid #334155; text-align: left; }}
+  th {{ color: #94a3b8; font-weight: normal; }}
+  .ts {{ color: #64748b; font-size: 13px; }}
+</style>
+</head>
+<body>
+  <h1>{TITLE}</h1>
+  <p class="ts">Updated {data['timestamp']}</p>
+  <table>
+    <thead><tr><th>Check</th><th>Value</th><th>Status</th></tr></thead>
+    <tbody>{rows}</tbody>
+  </table>
+  <details style="margin-top:2rem">
+    <summary style="cursor:pointer;color:#94a3b8">raw JSON</summary>
+    <pre style="background:#1e293b;padding:1rem;border-radius:4px;overflow-x:auto">{json.dumps(data, indent=2)}</pre>
+  </details>
+</body>
+</html>
+"""
+
+
+def main(open_browser: bool = True) -> None:
+    data = fetch_data()
+    html = render_html(data)
+    OUTPUT_PATH.write_text(html, encoding="utf-8")
+    print(f"Wrote {OUTPUT_PATH.resolve()}")
+    if open_browser:
+        webbrowser.open(OUTPUT_PATH.resolve().as_uri())
+
+
+if __name__ == "__main__":
+    main(open_browser="--no-open" not in sys.argv)

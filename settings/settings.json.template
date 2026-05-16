@@ -1,0 +1,94 @@
+{
+  "_comment_": "Mastermind settings template. Replace {PLACEHOLDERS}. init.py merges this into ~/.claude/settings.json non-destructively.",
+
+  "permissions": {
+    "allow": [
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git fetch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git restore:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(wc:*)",
+      "Bash(curl:*)",
+      "Bash(ping:*)",
+      "Bash(nslookup:*)",
+      "Bash(python:*)",
+      "Bash(reg query:*)",
+      "WebSearch",
+      "PowerShell(*)"
+    ],
+    "deny": [],
+    "ask": [],
+    "defaultMode": "acceptEdits",
+    "additionalDirectories": [
+      "{PROJECT_ROOT}",
+      "{HOME}/.claude"
+    ]
+  },
+
+  "env": {
+    "CLAUDE_CODE_USE_POWERSHELL_MODE": "1"
+  },
+
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -Command \"Add-Type -AssemblyName System.Windows.Forms; [System.Media.SystemSounds]::Exclamation.Play()\""
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"{MEMORY_DIR}/scripts/snapshot_memory.py\" pre-compact"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "clear",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"{MEMORY_DIR}/scripts/snapshot_memory.py\" post-clear-defensive"
+          }
+        ]
+      },
+      {
+        "matcher": "exit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"{MEMORY_DIR}/scripts/snapshot_memory.py\" session-exit"
+          }
+        ]
+      }
+    ]
+  },
+
+  "enabledPlugins": {
+    "_comment_": "Add plugins here, e.g. telegram@claude-plugins-official: true. See plugins/README.md."
+  },
+
+  "effortLevel": "high",
+  "remoteControlAtStartup": true,
+  "agentPushNotifEnabled": true,
+
+  "statusLine": {
+    "type": "command",
+    "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File {HOME}/.claude/statusline.ps1"
+  }
+}

@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*~
+
+# Local credentials / overrides
+*.local
+*.env
+.env
+.env.*
+*credentials*.json
+*secrets*.json
+
+# Runtime artifacts
+.onboarding_pending
+wake_log.md
+
+# Snapshots (these are deliberately local-only)
+snapshots/
+*.snapshot
+
+# Misc
+*.bak
+*.tmp

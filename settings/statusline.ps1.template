@@ -1,0 +1,22 @@
+# mastermind statusline — shows a labeled, colorized status line in Claude Code.
+#
+# To install: copy to ~/.claude/statusline.ps1 and reference from
+# ~/.claude/settings.json under "statusLine.command".
+#
+# Customize $label below to your taste — emoji, short word, whatever fires
+# you up when you sit down to work.
+
+$json  = [Console]::In.ReadToEnd() | ConvertFrom-Json
+$dir   = $json.workspace.current_dir
+$model = $json.model.display_name
+if ($env:USERPROFILE) {
+    $dir = $dir -replace [regex]::Escape($env:USERPROFILE), '~'
+}
+
+$esc   = [char]27
+$label = "$esc[1;95m🧠 MASTERMIND$esc[0m"
+$sep   = "$esc[90m│$esc[0m"
+$dirF  = "$esc[36m$dir$esc[0m"
+$modF  = "$esc[33m$model$esc[0m"
+
+Write-Output "$label  $sep  $dirF  $sep  $modF"
