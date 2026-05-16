@@ -1,8 +1,10 @@
 # Mastermind for Claude Code
 
+**Clone, run `python init.py`, get a Claude Code that remembers you, sits above every project you work on, reaches you on your phone, and shuts your PC down for you when you say good night.**
+
 > _by DrEvil_
 
-A personal-orchestrator mastermind for Claude Code. Clone it, run `python init.py`, transform your Claude Code into a persistent AI partner that:
+A persistent AI partner for Claude Code that:
 
 - **Remembers you** across sessions (tiered memory with explicit demotion rules — no "Day 30" context pollution).
 - **Sits above all your projects** as a router, with each project's context loaded on demand.
@@ -78,7 +80,7 @@ MastermindOpen/
 
 ## Status
 
-This is **v0.1**. Working but unpolished. The author runs a divergent live version daily — this fork is a snapshot in time, not a live mirror.
+**v0.1 released — 2026-05-16.** Working but unpolished. The author runs a divergent live version daily — this fork is a snapshot in time, not a live mirror.
 
 PRs welcome but feature PRs unlikely to land. The repo is a template, not a maintained framework. Take what you want, leave the rest.
 
