@@ -16,8 +16,8 @@ A personal-orchestrator mastermind for Claude Code. Clone it, run `python init.p
 ## Quick start
 
 ```bash
-git clone https://github.com/{YOUR_HANDLE}/OpenMastermind.git
-cd OpenMastermind
+git clone https://github.com/{YOUR_HANDLE}/MastermindOpen.git
+cd MastermindOpen
 python init.py
 ```
 
@@ -40,7 +40,7 @@ Walks you through naming, picking a template type (general / web-service / busin
 ## What's in the box
 
 ```
-OpenMastermind/
+MastermindOpen/
 ├── init.py                    Cross-platform installer
 ├── CLAUDE.md                  Generic mastermind orchestrator scaffold
 ├── memory/                    ~30 template memory files (Tier 0 + 1 + 1b + 2)
