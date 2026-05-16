@@ -1,0 +1,81 @@
+# {PROJECT_NAME} — Web Service / Aggregator
+
+## What this is
+
+{ONE_PARAGRAPH_DESCRIPTION_OF_THE_SERVICE}
+
+Common shape (adapt as needed):
+- A **feed-ingest layer** that polls upstream sources.
+- A **processing layer** (often AI-assisted) that grades / scores / summarizes.
+- A **storage layer** (typically SQLite or Postgres).
+- A **web layer** (HTML rendering + REST API + RSS feed).
+- A **delivery layer** (email digest, RSS, web).
+
+## Tech stack
+
+- **Language / runtime:** {LANG_RUNTIME} (e.g. "Rust + Axum", "Python + FastAPI", "TypeScript + Hono")
+- **Storage:** {STORAGE} (e.g. "SQLite via sqlx", "Postgres")
+- **Reverse proxy / TLS:** {REVERSE_PROXY} (e.g. "Caddy with auto-Let's-Encrypt")
+- **Hosting:** {HOSTING} (e.g. "DigitalOcean droplet", "Hetzner CX22")
+- **Domain:** {DOMAIN}
+
+## Critical commands
+
+```bash
+# Local dev
+{LOCAL_DEV_COMMAND}
+
+# Build + deploy
+{DEPLOY_COMMAND}     # e.g. ./scripts/deploy.sh --binary
+
+# Restart service on VPS
+ssh {VPS_USER}@{VPS_HOST} "systemctl restart {SERVICE_NAME}"
+
+# Tail logs
+ssh {VPS_USER}@{VPS_HOST} "journalctl -u {SERVICE_NAME} -f"
+
+# Database query (read-only)
+ssh {VPS_USER}@{VPS_HOST} "sqlite3 {DB_PATH} '{EXAMPLE_QUERY}'"
+```
+
+## Daily / weekly cron / scheduled tasks
+
+| Task | Schedule | What |
+|---|---|---|
+| {CRON_1} | {SCHEDULE_1} | {WHAT_1} |
+| {CRON_2} | {SCHEDULE_2} | {WHAT_2} |
+
+## Dashboard
+
+Run `python scripts/render_dashboard.py` to update `dashboard.html`. See [the dashboard template](../../../memory/scripts/render_dashboard.py.template) for the skeleton.
+
+Dashboard tracks:
+- Uptime / service status
+- DB record counts (subscribers, items processed, etc.)
+- Cost report (LLM tokens consumed today)
+- Recent errors (filtered for noise)
+
+## Conventions
+
+- **Never deploy config accidentally** — `--config` flag is deliberate only.
+- {OTHER_CONVENTIONS}
+
+## Project-specific gotchas
+
+- {GOTCHA_1}
+- {GOTCHA_2}
+
+## Credentials
+
+(Locations, not values.)
+
+- VPS SSH: {VPS_SSH_KEY_LOCATION}
+- DB master password: {DB_PASSWORD_LOCATION}
+- API keys: {API_KEY_LOCATION}
+- TLS cert: managed by {TLS_MANAGER} (e.g. "Caddy auto-renews")
+
+## Related
+
+- Project memory: `~/.claude/projects/<hash>/memory/project_{PROJECT_SLUG}.md`
+- Cost tracking memory: `~/.claude/projects/<hash>/memory/project_{PROJECT_SLUG}_cost_cutdown.md` (if applicable)
+- Mastermind: `{PARENT_DIR}/CLAUDE.md`

@@ -1,0 +1,63 @@
+# {LIBRARY_NAME} — Document Library / Content Pipeline
+
+## What this is
+
+{ONE_PARAGRAPH_DESCRIPTION}
+
+A "document library" or "content pipeline" project — converts source specs/inputs into rendered output documents (HTML, PDF, slides, ebooks). Common shape:
+
+```
+source/        ← canonical specs (Markdown, YAML, JSON)
+   ↓ render
+build/         ← per-output formats (HTML, PDF, etc.)
+   ↓ publish
+output/        ← what gets distributed
+```
+
+## Tech stack
+
+- **Source format:** {SOURCE_FORMAT} (e.g. "Markdown with YAML frontmatter", "AsciiDoc", "Pandoc-flavored markdown")
+- **Renderer:** {RENDERER} (e.g. "Pandoc", "Sphinx", "MkDocs", "custom Python")
+- **Templates:** {TEMPLATES_DIR}
+- **Output formats:** {OUTPUT_FORMATS} (e.g. "HTML, PDF, EPUB")
+
+## Critical commands
+
+```bash
+# Render once
+{RENDER_COMMAND}
+
+# Watch mode (re-render on file change)
+{WATCH_COMMAND}
+
+# Build for distribution
+{DIST_COMMAND}
+
+# Publish
+{PUBLISH_COMMAND}
+```
+
+## Spec-driven workflow
+
+If this is a spec-driven project (e.g. using GitHub Spec Kit at `.specify/`), see [docs/projects/spec-driven-pattern.md](../../../docs/projects/spec-driven-pattern.md) for the canonical flow.
+
+The TL;DR:
+1. Write or update the spec in `.specify/specs/{feature}.md`.
+2. Run the spec validator / generator.
+3. Hand-edit generated output if needed.
+4. Render.
+
+## Conventions
+
+- {CONVENTION_1}
+- {CONVENTION_2}
+
+## Project-specific gotchas
+
+- {GOTCHA_1}
+- {GOTCHA_2}
+
+## Related
+
+- Project memory: `~/.claude/projects/<hash>/memory/project_{LIBRARY_SLUG}.md`
+- Mastermind: `{PARENT_DIR}/CLAUDE.md`

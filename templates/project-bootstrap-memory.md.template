@@ -1,0 +1,68 @@
+---
+name: project-{PROJECT_SLUG}
+description: "{PROJECT_NAME}: {ONE_LINE_DESCRIPTION}. Created {CREATED_DATE}."
+metadata:
+  type: project
+---
+
+# {PROJECT_NAME}
+
+## Identity
+
+- **Project name:** {PROJECT_NAME}
+- **Type:** {PROJECT_TYPE} (general / web-service / business / game / document-library)
+- **Path:** {PROJECT_PATH}
+- **Created:** {CREATED_DATE}
+- **Status:** {STATUS} (active / paused / archived)
+
+## What it is
+
+{ONE_PARAGRAPH_DESCRIPTION}
+
+## Tech stack / surface
+
+- **Primary language:** {PRIMARY_LANG}
+- **Framework / engine:** {FRAMEWORK}
+- **Database:** {DATABASE}
+- **Hosting:** {HOSTING}
+- **CI / deploy:** {CI_DEPLOY}
+
+## Critical commands
+
+```bash
+# Build:
+{BUILD_COMMAND}
+
+# Test:
+{TEST_COMMAND}
+
+# Deploy:
+{DEPLOY_COMMAND}
+
+# Dashboard / health check:
+{DASHBOARD_COMMAND}
+```
+
+## Credentials / accounts
+
+(Reference, don't paste. Actual credentials go in your password manager.)
+
+- {ACCOUNT_1}: {OWNER_OR_LOCATION_1}
+- {ACCOUNT_2}: {OWNER_OR_LOCATION_2}
+
+## Known issues / open items
+
+- {ISSUE_1}
+- {ISSUE_2}
+
+## Decisions worth remembering
+
+(Lessons-learned, architecture choices with context. These survive when the code changes.)
+
+- {DECISION_1} ({DATE_1}) — {DECISION_DESCRIPTION_1}
+- {DECISION_2} ({DATE_2}) — {DECISION_DESCRIPTION_2}
+
+## Related memories
+
+- {RELATED_1}
+- {RELATED_2}

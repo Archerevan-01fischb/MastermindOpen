@@ -1,0 +1,66 @@
+# {BUSINESS_NAME} — Business / LLC
+
+## What this is
+
+{ONE_PARAGRAPH_DESCRIPTION_OF_THE_BUSINESS}
+
+This is a "business project" — a small business or LLC with multiple operational surfaces (website + email + calendar + accounting + e-signature + ads + analytics).
+
+## Business identity
+
+- **Legal name:** {LEGAL_NAME}
+- **EIN / entity ID:** {EIN_LOCATION} (don't paste in CLAUDE.md — reference where it's stored)
+- **State of registration:** {STATE}
+- **Bank account:** {BANK_LOCATION}
+- **Accountant:** {ACCOUNTANT_NAME_LOCATION}
+
+## Operational surfaces
+
+| Surface | Tool / vendor | Key URL / address | Owner |
+|---|---|---|---|
+| Website | {WEBSITE_HOSTING} | {WEBSITE_URL} | {WEBSITE_OWNER} |
+| Email | {EMAIL_PROVIDER} | {EMAIL_DOMAIN} | {EMAIL_OWNER} |
+| Calendar | {CALENDAR_PROVIDER} | {CALENDAR_ACCOUNT} | {CALENDAR_OWNER} |
+| Accounting | QuickBooks Online | {QBO_COMPANY_NAME} | {ACCOUNTING_OWNER} |
+| E-signature | DocuSign | {DOCUSIGN_ACCOUNT} | {SIGN_OWNER} |
+| Ads | {ADS_PROVIDER} | {ADS_ACCOUNT_ID} | {ADS_OWNER} |
+| Analytics | {ANALYTICS_PROVIDER} | {ANALYTICS_PROPERTY_ID} | {ANALYTICS_OWNER} |
+
+## Daily / weekly operations
+
+- **Email triage:** Check {EMAIL_ADDRESS} {CADENCE}. Mastermind can summarize + draft replies via Gmail MCP.
+- **QB ledger review:** {QBO_CADENCE}. Authorize Journal Entries from forwarded receipts.
+- **Calendar sync:** Mastermind handles event creation per `user_calendar_color_schema.md`.
+
+## Owner-paid business expenses
+
+When paying a business expense from a personal card: the QB entry is a **Journal Entry** (debit the expense account, credit Owner Equity / Owner Investments). NOT an expense or a bill. Easy to get wrong.
+
+## Critical commands
+
+```bash
+# Deploy website
+{WEBSITE_DEPLOY_COMMAND}
+
+# Pull latest analytics
+{ANALYTICS_PULL_COMMAND}
+
+# Generate P&L
+{PNL_COMMAND}
+```
+
+## Conventions
+
+- Events on {BUSINESS_CALENDAR_EMAIL} only — don't mix with personal calendar.
+- {OTHER_CONVENTIONS}
+
+## Project-specific gotchas
+
+- {GOTCHA_1}
+- {GOTCHA_2}
+
+## Related
+
+- Project memory: `~/.claude/projects/<hash>/memory/project_{PROJECT_SLUG}.md`
+- Ads workstream memory: `~/.claude/projects/<hash>/memory/project_{PROJECT_SLUG}_ads.md`
+- Mastermind: `{PARENT_DIR}/CLAUDE.md`

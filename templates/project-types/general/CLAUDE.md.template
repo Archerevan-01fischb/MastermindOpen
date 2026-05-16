@@ -1,0 +1,35 @@
+# {PROJECT_NAME}
+
+## What this is
+
+{ONE_PARAGRAPH_DESCRIPTION}
+
+## How to work on this
+
+- **Build:** `{BUILD_COMMAND}`
+- **Test:** `{TEST_COMMAND}`
+- **Run / serve:** `{RUN_COMMAND}`
+
+## Conventions
+
+(Coding conventions, naming, dependencies of note. Keep short — mastermind reads this every time it works on this project.)
+
+- {CONVENTION_1}
+- {CONVENTION_2}
+
+## Project-specific gotchas
+
+- {GOTCHA_1}
+- {GOTCHA_2}
+
+## Where things live
+
+- Source: `{SRC_PATH}`
+- Tests: `{TESTS_PATH}`
+- Docs: `{DOCS_PATH}`
+- Build artifacts: `{ARTIFACTS_PATH}`
+
+## Related
+
+- Project memory: `~/.claude/projects/<hash-of-this-dir>/memory/project_{PROJECT_SLUG}.md`
+- Mastermind: `{PARENT_DIR}/CLAUDE.md`

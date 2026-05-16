@@ -1,0 +1,73 @@
+# {GAME_NAME} — Game Project
+
+## What this is
+
+{ONE_PARAGRAPH_DESCRIPTION_OF_THE_GAME}
+
+## Engine / tech stack
+
+- **Engine:** {ENGINE} (e.g. "Bevy 0.16 on Rust 1.78", "Unreal Engine 5.7", "Unity 2023.3 LTS")
+- **Language:** {LANGUAGE}
+- **Asset pipeline:** {ASSET_PIPELINE} (e.g. "Blender → glTF → Bevy AssetServer", "FBX from Maya → UE5 Import")
+- **Build target platforms:** {PLATFORMS} (e.g. "Windows + Mac + Linux + Steam Deck")
+- **Distribution:** {DISTRIBUTION} (e.g. "Steam, itch.io, GOG", "self-hosted at {DOMAIN}/downloads")
+
+## Critical commands
+
+```bash
+# Build (dev)
+{BUILD_DEV_COMMAND}
+
+# Build (release, all platforms)
+{BUILD_RELEASE_COMMAND}     # often a GitHub Actions trigger: `git tag vX.Y.Z && git push --tags`
+
+# Run from terminal
+{RUN_COMMAND}
+
+# Profiling
+{PROFILE_COMMAND}
+
+# Test
+{TEST_COMMAND}
+```
+
+## Asset conventions
+
+- **Source assets** (3D files, source PSDs) live at {SOURCE_ASSETS_PATH} (NOT committed to repo — too big).
+- **Exported assets** (gltf, png, ogg) live at `assets/` (committed).
+- **Naming:** {NAMING_CONVENTION} (e.g. "snake_case for directories, PascalCase for source files")
+
+## Release pipeline
+
+GitHub Actions workflow at `.github/workflows/release.yml` triggers on tag push. It:
+1. Builds for each platform.
+2. Packages with the launcher / installer per platform.
+3. Uploads to {DISTRIBUTION_TARGET}.
+
+Manual release checklist before tagging:
+- [ ] Version bumped in {VERSION_FILE}
+- [ ] CHANGELOG updated
+- [ ] All tests passing
+- [ ] Last-build smoke-tested on at least 2 platforms locally
+- [ ] Asset license audit clean (no copyrighted music etc.)
+
+## Conventions
+
+- {CONVENTION_1} (e.g. "all gameplay constants live in `src/config/balance.rs`, not scattered")
+- {CONVENTION_2}
+
+## Project-specific debug guidelines
+
+- {DEBUG_TIP_1}
+- {DEBUG_TIP_2}
+
+## Known issues / open items
+
+- {ISSUE_1}
+- {ISSUE_2}
+
+## Related
+
+- Project memory: `~/.claude/projects/<hash>/memory/project_{GAME_SLUG}.md`
+- Mastermind: `{PARENT_DIR}/CLAUDE.md`
+- Child Claude (if applicable): see [child-mastermind-pattern.md](../../../docs/projects/child-mastermind-pattern.md)
