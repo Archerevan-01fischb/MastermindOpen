@@ -13,8 +13,8 @@ The dirs are flat siblings of each other. Claude Code's hash function is determi
 
 ## Why split?
 
-- **Always-loaded context stays small.** Mastermind doesn't carry WarNews's deploy commands or MW's debug guidelines on every session start. Those load on demand.
-- **Concerns separate cleanly.** "Bruce prefers terse responses" belongs in mastermind. "WarNews VPS uptime command is `ssh root@... uptime`" belongs in WarNews's memory.
+- **Always-loaded context stays small.** Mastermind doesn't carry a web service's deploy commands or a game project's debug guidelines on every session start. Those load on demand.
+- **Concerns separate cleanly.** "User prefers terse responses" belongs in mastermind. "ProjectA VPS uptime command is `ssh root@... uptime`" belongs in ProjectA's memory.
 - **You can spawn child Claudes** with their own identity and memory dir (see [child-mastermind-pattern](projects/child-mastermind-pattern.md)) — that pattern only works if memory is per-project.
 
 ## What lives in mastermind memory

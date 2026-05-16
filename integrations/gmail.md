@@ -8,7 +8,7 @@ Read / draft / send / label / search Gmail across one or more Google accounts. U
 - Draft and send mail (with explicit confirmation by default — set per-account policy)
 - Apply / strip labels
 - Read threads (the user can ask "what did I last say to X about Y?")
-- Build label-based workflows (e.g. label="Receipts/Passaggio" → file as QB expense)
+- Build label-based workflows (e.g. label="Receipts/Business" → file as QB expense)
 
 ## Setup
 

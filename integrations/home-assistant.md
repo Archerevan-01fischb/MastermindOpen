@@ -30,7 +30,7 @@ In HA:
 The MCP server needs to reach HA over HTTP. Two paths:
 
 **Path A: same LAN (simplest).**
-- HA URL: `http://<ha-host-ip>:8123/` (e.g. `http://10.0.0.55:8123/`)
+- HA URL: `http://<ha-host-ip>:8123/` (e.g. `http://192.0.2.55:8123/` — substitute your actual LAN IP)
 - Works for desktop sessions on home Wi-Fi.
 
 **Path B: off-LAN via Tailscale / Cloudflare Tunnel / similar.**

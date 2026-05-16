@@ -34,7 +34,7 @@ Your mastermind (Claude Code) sees the message, reacts, processes
 
 1. Open a DM with your new bot (search for its `@handle`).
 2. Send any message ("hello").
-3. From your laptop: `curl https://api.telegram.org/bot<TOKEN>/getUpdates` — find your `chat.id` (a number like `8646599329`).
+3. From your laptop: `curl https://api.telegram.org/bot<TOKEN>/getUpdates` — find your `chat.id` (a 9-10 digit number).
 
 ### 3. Enable the plugin
 

@@ -30,7 +30,7 @@ Roughly: if you would name a teammate to work on this full-time, the project ear
 
 It's still one Claude Code binary. Two differences from the parent:
 
-1. **Distinct CLAUDE.md identity:** the child's CLAUDE.md says "You are Frostsmith. You work exclusively on the Midwinter Unreal remake. The parent mastermind tracks your progress at a high level, but you own the technical work."
+1. **Distinct CLAUDE.md identity:** the child's CLAUDE.md says e.g. "You are Frostsmith. You work exclusively on {the game project}. The parent mastermind tracks your progress at a high level, but you own the technical work."
 2. **Distinct memory dir:** the child's memory dir lives at the project's hash path. None of the parent's user-preference / cross-cutting memory is loaded.
 
 The child is "less generalist, more specialist." It loses the user-preference layer the parent has built up; that's the trade-off.
@@ -74,7 +74,7 @@ Good names:
 - NOT "Claude" or generic LLM names.
 - NOT collisions with real-people names you also work with.
 
-Examples: "Frostsmith" (Midwinter), "Helios" (a solar tracker), "Cooper" (a logistics tool).
+Examples: "Frostsmith" (a game remaster), "Helios" (a solar tracker), "Cooper" (a logistics tool).
 
 ## When the child should defer to the parent
 
